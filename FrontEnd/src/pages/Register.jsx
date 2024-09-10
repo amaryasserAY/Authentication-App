@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 const Register = () => {
 
 
   const [formData, setFormData] = useState({})
   const [error,setError] = useState(false)
   const [loading,setLoading] = useState(false)
+  const navigate = useNavigate();
 
 const handelChange = (e)=>{
 setFormData({...formData , [e.target.id] : e.target.value});
@@ -31,6 +32,7 @@ try{
     setError(true) 
   } 
  
+  navigate("/login")
 }catch(error){
 setLoading(false)
 setError(error.message)
