@@ -61,7 +61,7 @@ setError(error.message)
   <p>Have an Account?</p>
   <Link className="text-blue-500" to="/login">Sign in</Link>
 </div>
-<p className='text-red-700 mt-5'>{error && 'something is wrong'}</p>
+<p className='text-red-700 mt-5'>{error && 'something is wrong' }</p>
     </div>
   )
 }
