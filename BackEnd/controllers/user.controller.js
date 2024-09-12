@@ -8,7 +8,7 @@ export const test = (req, res) => {
 // Update User  profile
 
 export const updateUser = async (req, res, next) => {
-  if (req.user.id === req.params.id) {
+  if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "You Can Update Your Profile Only"));
   }
 
@@ -31,7 +31,7 @@ export const updateUser = async (req, res, next) => {
     );
     const { password, ...rest } = updateUser._doc;
     res.status(200).json(rest);
-  } catch (e) {
-    next(e);
+  } catch (error) {
+    next(error);
   }
 };
