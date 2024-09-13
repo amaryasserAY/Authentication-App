@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from "react"
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
 import { app } from "../firebase"
 import { useDispatch } from "react-redux"
-import { updateUserSuccess,updateUserStart,updateUserFailure } from "../redux/user/userSlice"
+import { updateUserSuccess,updateUserStart,updateUserFailure, deleteUserStart, deleteUserFailure, deleteUserSuccess } from "../redux/user/userSlice"
 
 
 const Profile = () => {
@@ -61,6 +61,7 @@ const res  = await fetch(`/api/user/update/${currentUser._id}`,{
   body: JSON.stringify(formData)
 
 });
+
 const data = await res.json();
 
 if (data.success ===false){
@@ -75,9 +76,43 @@ setUpdateSuccess(true);
   dispatch(updateUserFailure(error));
 }
 
-
-
 } 
+
+const handleDelete =async () =>{
+
+
+try{
+
+
+
+  const res  = await fetch(`/api/user/delete/${currentUser._id}`,{
+    method: 'DELETE',
+    });
+dispatch(deleteUserStart())
+    const data = await res.json();
+    if(data.success === false){
+      dispatch(deleteUserFailure(data));
+      return;
+    }
+
+dispatch(deleteUserSuccess(data))
+
+}catch(error) {
+  dispatch(deleteUserFailure(error))
+}
+
+
+
+
+
+
+
+
+
+
+
+}
+
 
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -113,7 +148,7 @@ setUpdateSuccess(true);
 
 <div className="flex justify-between mt-5 items-center">
 
-  <span className="text-red-700 cursor-pointer ">Delete Account</span>
+  <span className="text-red-700 cursor-pointer " onClick={handleDelete}>Delete Account</span>
   <span className="text-red-700 cursor-pointer ">Sign Out</span>
 </div>
 
