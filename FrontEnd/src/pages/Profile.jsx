@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from "react"
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
 import { app } from "../firebase"
 import { useDispatch } from "react-redux"
-import { updateUserSuccess,updateUserStart,updateUserFailure, deleteUserStart, deleteUserFailure, deleteUserSuccess } from "../redux/user/userSlice"
+import { updateUserSuccess,updateUserStart,updateUserFailure, deleteUserStart, deleteUserFailure, deleteUserSuccess, signOut } from "../redux/user/userSlice"
 
 
 const Profile = () => {
@@ -36,6 +36,7 @@ uploadTask.on(
 
 (error) =>{
 setImageError(true)
+console.log(error)
 },
 
 ()=>{  getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
@@ -101,17 +102,35 @@ dispatch(deleteUserSuccess(data))
   dispatch(deleteUserFailure(error))
 }
 
+}
 
 
 
 
 
+const handleSignOut = async () =>{
+
+
+try{
+
+await fetch(`/api/auth/signout`);
+
+dispatch(signOut());
+}catch(error) {
+console.log(error);
+}
 
 
 
 
 
 }
+
+
+
+
+
+
 
 
   return (
@@ -149,7 +168,7 @@ dispatch(deleteUserSuccess(data))
 <div className="flex justify-between mt-5 items-center">
 
   <span className="text-red-700 cursor-pointer " onClick={handleDelete}>Delete Account</span>
-  <span className="text-red-700 cursor-pointer ">Sign Out</span>
+  <span className="text-red-700 cursor-pointer " onClick={handleSignOut}>Sign Out</span>
 </div>
 
 
